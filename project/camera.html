@@ -1,0 +1,95 @@
+<html>
+
+<head>
+    <style>
+        .rotate180 {
+            -webkit-transform: rotate(180deg);
+            -moz-transform: rotate(180deg);
+            -o-transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+        
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 82px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        
+        .button1 {
+            background-color: #477fd8;
+            border: none;
+            color: white;
+            padding: 15px 142px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        
+        .button2 {
+            background-color: #ea430b;
+            border: none;
+            color: white;
+            padding: 15px 150px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+    <title>
+        Smart Lock
+    </title>
+    <script src="http://192.168.0.109:8081/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io('http://192.168.0.109:8081');
+        socket.on('connect', function() {
+            alert('connected');
+        });
+
+        socket.on('data', function(msg) {
+            document.getElementById('ptag').innerHTML = msg;
+        });
+
+        function lock() {
+            socket.emit('lock', "lock");
+        }
+
+        function unlock() {
+            socket.emit('unlock', "unlock");
+        }
+
+        function pin() {
+            socket.emit('pin', "S" + (Math.floor(Math.random() * 90000000) + 10000000).toString());
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Smart Lock App</h1>
+    <label>Status: </label>
+    <label id="ptag"> --- </label>
+    <br>
+    <img src="http://192.168.0.109:8081/?action=stream" height="300" width="340" class="rotate180" />
+            <br><br>
+            <button onclick="lock()" class="button2">Lock</button>
+            <br>
+            <button onclick="unlock()" class="button1">Unlock</button>
+            <br>
+            <button onclick="pin()" class="button">Generate temporary pin</button>
+            <br>
+</body>
+
+</html>
